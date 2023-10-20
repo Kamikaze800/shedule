@@ -6,8 +6,7 @@ with open('shedule.csv', mode='r', newline='', encoding='utf-8') as file:
     # print(reader)
     sp = []
     dc = {}
-    sub_teach_dc = {'И.Р.Худ': 'Математика', 'С.А.Науман': 'Физика', 'Н.Н.Священко': 'Иностранный язык',
-                    'Ч.Е.Нонова': 'Русский язык'}
+
     teach_sub_count = {}
     for ind, row in enumerate(reader):
         if ind == 0:
