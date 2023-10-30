@@ -18,16 +18,16 @@ class Shedule(QMainWindow):
         self.table_save_changes.clicked.connect(self.table_save_changes_def)
         self.view_count_sub_table.clicked.connect(self.view_count_sub_table_def)
         self.view_teach_sub_table.clicked.connect(self.view_teach_sub_table_def)
-        # self.qdilog_count_sub_table = qdilog_count_sub_class()
-        # self.qdilog_teach_sub_table = qdilog_teach_sub_class()
+        self.qwidget_count_sub_table = shablon_table_view('subject_count.csv')
+        self.qwidget_teach_sub_table = shablon_table_view('teach_klas.csv')
 
     def view_count_sub_table_def(self):
-        self.qdilog_count_sub_table.show()
-        self.qdilog_count_sub_table.exec_()
+        self.qwidget_count_sub_table.show()
+        # self.qwidget_count_sub_table.exec_()
 
     def view_teach_sub_table_def(self):
-        self.qdilog_teach_sub_table.show()
-        self.qdilog_teach_sub_table.exec_()
+        self.qwidget_teach_sub_table.show()
+        # self.qdilog_teach_sub_table.exec_()
 
     def table_save_changes_def(self):
         pass
@@ -53,6 +53,57 @@ class Shedule(QMainWindow):
                 table_item = QTableWidgetItem(subject)
                 self.tableWidget.setItem(i, j, table_item)
 
+class shablon_table_view(QWidget):
+    def __init__(self, file_name):
+        super().__init__()
+        table = QTableWidget()
+        # main_widget = QWidget(window)
+        layout = QVBoxLayout(self)
+
+        # Открываем файл CSV и читаем данные
+        with open(f'{file_name}', 'r', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            data = list(reader)
+
+        # Устанавливаем количество строк и столбцов в таблице
+        num_rows = len(data)
+        num_cols = len(data[0])
+        table.setRowCount(num_rows)
+        table.setColumnCount(num_cols)
+
+        # Заполняем таблицу данными из файла
+        for i, row in enumerate(data):
+            for j, value in enumerate(row):
+                table_item = QTableWidgetItem(value)
+                table.setItem(i, j, table_item)
+
+        # Убираем нумерацию строк и столбцов
+        table.verticalHeader().setVisible(False)
+        table.horizontalHeader().setVisible(False)
+
+        # Масштабируем таблицу под контент
+        table.resizeColumnsToContents()
+        table.resizeRowsToContents()
+
+        # кнопка появляется при изменении поля
+
+        button = QPushButton("Save Changes", self)
+
+        # button.setVisible(False)
+        def item_changed():
+            button.setVisible(True)
+
+        # Connect the itemChanged signal to the item_changed slot
+        table.itemChanged.connect(item_changed)
+
+        def save_changes():
+            button.setVisible(False)
+            print("Changes saved.")
+
+        layout.addWidget(table)
+        layout.addWidget(button)
+        self.setLayout(layout)
+        self.resize(table.size())
 
 def main():
     app = QApplication(sys.argv)
