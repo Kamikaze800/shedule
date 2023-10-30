@@ -154,16 +154,6 @@
       <string>Пятница</string>
      </property>
     </item>
-    <item>
-     <property name="text">
-      <string>Суббота</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>Воскресенье</string>
-     </property>
-    </item>
    </widget>
    <widget class="QLabel" name="label_6">
     <property name="geometry">

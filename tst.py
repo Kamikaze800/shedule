@@ -1,62 +1,47 @@
+import sys
 import csv
-from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QPushButton, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem
 
-# Создаем приложение
-app = QApplication([])
-window = QMainWindow()
+# Создаем приложение и главное окно
+app = QApplication(sys.argv)
+main_window = QMainWindow()
+
+# Создаем таблицу
 table = QTableWidget()
-# main_widget = QWidget(window)
-layout = QVBoxLayout(window)
+main_window.setCentralWidget(table)
 
-# Открываем файл CSV и читаем данные
-with open('subject_count.csv', 'r', encoding='utf-8') as file:
-    reader = csv.reader(file)
+# Открываем CSV-файл и считываем данные
+with open('static/csv/1 класс.csv',encoding='utf-8', newline='') as csvfile:
+    reader = csv.reader(csvfile)
     data = list(reader)
 
+# Определяем день, для которого вы хотите вывести расписание
+day = "Понедельник"
+
+# Находим индекс столбца, соответствующего выбранному дню
+day_column = data[0].index("день")
+
+# Фильтруем данные только для выбранного дня
+filtered_data = [row for row in data if row[day_column] == day]
+
 # Устанавливаем количество строк и столбцов в таблице
-num_rows = len(data)
-num_cols = len(data[0])
-table.setRowCount(num_rows)
-table.setColumnCount(num_cols)
+table.setRowCount(len(filtered_data))
+table.setColumnCount(len(filtered_data[0]))
 
-# Заполняем таблицу данными из файла
-for i, row in enumerate(data):
-    for j, value in enumerate(row):
-        table_item = QTableWidgetItem(value)
-        table.setItem(i, j, table_item)
+# Заполняем таблицу данными для выбранного дня
+for row_num, row_data in enumerate(filtered_data):
+    for col_num, cell_data in enumerate(row_data):
+        item = QTableWidgetItem(cell_data)
+        table.setItem(row_num, col_num, item)
 
-# Убираем нумерацию строк и столбцов
-table.verticalHeader().setVisible(False)
-table.horizontalHeader().setVisible(False)
+# Устанавливаем заголовки столбцов
+table.setHorizontalHeaderLabels(data[0])
 
-# Масштабируем таблицу под контент
-table.resizeColumnsToContents()
-table.resizeRowsToContents()
+# Устанавливаем название дня
+main_window.setWindowTitle(day)
 
-# кнопка появляется при изменении поля
-
-button = QPushButton("Save Changes", window)
-# button.setVisible(False)
-def item_changed():
-    button.setVisible(True)
-
-# Connect the itemChanged signal to the item_changed slot
-table.itemChanged.connect(item_changed)
-
-def save_changes():
-    button.setVisible(False)
-    print("Changes saved.")
-
-# layout.addWidget(table)
-layout.addWidget(button)
-# table_sub_count = table
-# Добавляем таблицу в окно приложения
-window.setLayout(layout)
-window.resize(table.size())
-window.setCentralWidget(table)
-window.show()
+# Отображаем окно
+main_window.show()
 
 # Запускаем приложение
-app.exec_()
-
-
+sys.exit(app.exec_())
