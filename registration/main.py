@@ -38,6 +38,7 @@ class Interface(QtWidgets.QWidget):
         name = self.ui.lineEdit.text()
         passw = self.ui.lineEdit_2.text()
         self.check_db.thr_login(name, passw)
+        return
 
 
     @check_input
@@ -47,9 +48,12 @@ class Interface(QtWidgets.QWidget):
         self.check_db.thr_register(name, passw)
 
 
-
-if __name__ == "__main__":
+def main():
     app = QtWidgets.QApplication(sys.argv)
     mywin = Interface()
     mywin.show()
     sys.exit(app.exec_())
+
+
+if __name__ == "__main__":
+    main()
