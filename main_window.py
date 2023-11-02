@@ -1,5 +1,5 @@
 import csv
-import os
+
 import sys
 
 from PyQt5.QtGui import QIcon
@@ -9,8 +9,6 @@ from PyQt5 import uic
 from create_dc_from_csv_file import create_dc_from_csv
 from main_ui import *
 from trash import *
-# from tst import table_sub_count
-
 
 class Shedule(QMainWindow):
     def __init__(self):

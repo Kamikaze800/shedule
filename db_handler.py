@@ -4,7 +4,7 @@ import sys
 from main_window import *
 
 def login(login, passw, signal):
-    con = sqlite3.connect(os.path.abspath(os.path.join(os.path.dirname(__file__), 'users')))
+    con = sqlite3.connect('users') # Подключаемся к базе данных
     cur = con.cursor()
 
     # Проверяем есть ли такой пользователь
@@ -12,7 +12,8 @@ def login(login, passw, signal):
     value = cur.fetchall()
 
     if value != [] and value[0][2] == passw:
-        signal.emit('Успешная авторизация!')
+
+
         return True
 
     else:

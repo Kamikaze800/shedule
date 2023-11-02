@@ -22,7 +22,6 @@ class Interface(QtWidgets.QWidget):
         self.check_db = CheckThread()
         self.check_db.mysignal.connect(self.signal_handler)
 
-
     # Проверка правильности ввода
     def check_input(funct):
         def wrapper(self):
@@ -30,22 +29,25 @@ class Interface(QtWidgets.QWidget):
                 if len(line_edit.text()) == 0:
                     return
             funct(self)
+
         return wrapper
 
+    def ok(self):
+        self.window = Shedule()
+        self.window.show()
+        self.hide()
 
     # Обработчик сигналов
     def signal_handler(self, value):
         QtWidgets.QMessageBox.about(self, 'Оповещение', value)
-
 
     @check_input
     def auth(self):
         name = self.ui.lineEdit.text()
         passw = self.ui.lineEdit_2.text()
         if self.check_db.thr_login(name, passw):
-            self.hide()
+            self.ok()
         return
-
 
     @check_input
     def reg(self):
@@ -59,4 +61,3 @@ def main_reg_def():
     mywin = Interface()
     mywin.show()
     sys.exit(app.exec_())
-
