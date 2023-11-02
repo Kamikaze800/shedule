@@ -13,7 +13,8 @@ def login(login, passw, signal):
 
     if value != [] and value[0][2] == passw:
         signal.emit('Успешная авторизация!')
-        main_window_def()
+        return True
+
     else:
         signal.emit('Проверьте правильность ввода данных!')
 

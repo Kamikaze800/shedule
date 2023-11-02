@@ -7,24 +7,25 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidge
     QPushButton, QDialog, QMessageBox
 from PyQt5 import uic
 from create_dc_from_csv_file import create_dc_from_csv
-from main_ui import Ui_MainWindow
-
+from main_ui import *
+from trash import *
 # from tst import table_sub_count
 
 
 class Shedule(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('main.ui', self)
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
         # self.ui = Ui_MainWindow()
         # self.ui.setupUi(self)
         self.setWindowIcon(QIcon('table.png'))
-        self.view_table_but.clicked.connect(self.view_table_def)
-        self.view_count_sub_table.clicked.connect(self.view_count_sub_table_def)
-        self.view_teach_sub_table.clicked.connect(self.view_teach_sub_table_def)
-        self.qwidget_count_sub_table = shablon_table_view('subject_count.csv')
-        self.qwidget_teach_sub_table = shablon_table_view('teach_klas.csv')
-        self.generation_but.clicked.connect(self.generation_def)
+        self.ui.view_table_but.clicked.connect(self.view_table_def)
+        self.ui.view_count_sub_table.clicked.connect(self.view_count_sub_table_def)
+        self.ui.view_teach_sub_table.clicked.connect(self.view_teach_sub_table_def)
+        self.ui.qwidget_count_sub_table = shablon_table_view('subject_count.csv')
+        self.ui.qwidget_teach_sub_table = shablon_table_view('teach_klas.csv')
+        self.ui.generation_but.clicked.connect(self.generation_def)
         self.setWindowTitle("Генерация расписаний")
 
     def generation_def(self):
@@ -36,7 +37,7 @@ class Shedule(QMainWindow):
         result = msg.exec_()
         if result == QMessageBox.Yes:
             # Действия при нажатии кнопки "Да"
-            os.system('python trash.py')
+            trash_def()
 
     def view_count_sub_table_def(self):
         self.qwidget_count_sub_table.show()

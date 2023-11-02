@@ -42,8 +42,8 @@ class Interface(QtWidgets.QWidget):
     def auth(self):
         name = self.ui.lineEdit.text()
         passw = self.ui.lineEdit_2.text()
-        self.check_db.thr_login(name, passw)
-
+        if self.check_db.thr_login(name, passw):
+            self.hide()
         return
 
 
@@ -58,6 +58,5 @@ def main_reg_def():
     app = QtWidgets.QApplication(sys.argv)
     mywin = Interface()
     mywin.show()
-    main_window_def()
     sys.exit(app.exec_())
 

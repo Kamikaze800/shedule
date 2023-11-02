@@ -6,7 +6,8 @@ class CheckThread(QtCore.QThread):
     mysignal = QtCore.pyqtSignal(str)
 
     def thr_login(self, name, passw):
-        login(name, passw, self.mysignal)
+        if login(name, passw, self.mysignal):
+            return True
 
 
     def thr_register(self, name, passw):
