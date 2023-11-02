@@ -1,8 +1,7 @@
 import sqlite3
-import os
 import sys
 
-import main_window
+from main_window import *
 
 def login(login, passw, signal):
     con = sqlite3.connect(os.path.abspath(os.path.join(os.path.dirname(__file__), 'users')))
@@ -14,10 +13,7 @@ def login(login, passw, signal):
 
     if value != [] and value[0][2] == passw:
         signal.emit('Успешная авторизация!')
-        abs_path = os.path.abspath('main_window_start.py')
-        os.system(f'python {abs_path}')
-        # sys.exit()
-        # os.system('python D:\\work\\shedule\\main_window.py')
+        main_window_def()
     else:
         signal.emit('Проверьте правильность ввода данных!')
 
@@ -27,7 +23,7 @@ def login(login, passw, signal):
 
 
 def register(login, passw, signal):
-    con = sqlite3.connect('handler/users')
+    con = sqlite3.connect('users')
     cur = con.cursor()
 
     cur.execute(f'SELECT * FROM users WHERE name="{login}";')

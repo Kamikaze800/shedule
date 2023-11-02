@@ -1,10 +1,13 @@
 import csv
+import os
 import sys
+
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget, \
-    QPushButton, QDialog
+    QPushButton, QDialog, QMessageBox
 from PyQt5 import uic
 from create_dc_from_csv_file import create_dc_from_csv
-
+from main_ui import Ui_MainWindow
 
 # from tst import table_sub_count
 
@@ -12,22 +15,36 @@ from create_dc_from_csv_file import create_dc_from_csv
 class Shedule(QMainWindow):
     def __init__(self):
         super().__init__()
-        # self.initUI()
         uic.loadUi('main.ui', self)
+        # self.ui = Ui_MainWindow()
+        # self.ui.setupUi(self)
+        self.setWindowIcon(QIcon('table.png'))
         self.view_table_but.clicked.connect(self.view_table_def)
-        self.table_save_changes.clicked.connect(self.table_save_changes_def)
         self.view_count_sub_table.clicked.connect(self.view_count_sub_table_def)
         self.view_teach_sub_table.clicked.connect(self.view_teach_sub_table_def)
         self.qwidget_count_sub_table = shablon_table_view('subject_count.csv')
         self.qwidget_teach_sub_table = shablon_table_view('teach_klas.csv')
+        self.generation_but.clicked.connect(self.generation_def)
+        self.setWindowTitle("Генерация расписаний")
+
+    def generation_def(self):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Question)
+        msg.setText("Вы точно хотите выполнить генерацию?")
+        msg.setWindowTitle("Подтверждение")
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+        result = msg.exec_()
+        if result == QMessageBox.Yes:
+            # Действия при нажатии кнопки "Да"
+            os.system('python trash.py')
 
     def view_count_sub_table_def(self):
         self.qwidget_count_sub_table.show()
-        # self.qwidget_count_sub_table.exec_()
+
 
     def view_teach_sub_table_def(self):
         self.qwidget_teach_sub_table.show()
-        # self.qdilog_teach_sub_table.exec_()
+
 
     def table_save_changes_def(self):
         pass
@@ -57,8 +74,11 @@ class shablon_table_view(QWidget):
     def __init__(self, file_name):
         super().__init__()
         table = QTableWidget()
+        table = QTableWidget()
+
         # main_widget = QWidget(window)
         layout = QVBoxLayout(self)
+        self.file_name = file_name
 
         # Открываем файл CSV и читаем данные
         with open(f'{file_name}', 'r', encoding='utf-8') as file:
@@ -88,27 +108,39 @@ class shablon_table_view(QWidget):
         # кнопка появляется при изменении поля
 
         button = QPushButton("Save Changes", self)
-
-        # button.setVisible(False)
-        def item_changed():
-            button.setVisible(True)
-
-        # Connect the itemChanged signal to the item_changed slot
-        table.itemChanged.connect(item_changed)
-
-        def save_changes():
-            button.setVisible(False)
-            print("Changes saved.")
+        button.clicked.connect(self.saveToCSV)
 
         layout.addWidget(table)
         layout.addWidget(button)
         self.setLayout(layout)
         self.resize(table.size())
+        self.table = table
 
-def main():
+    def saveToCSV(self):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Question)
+        msg.setText("Вы точно хотите сохранить изменения?")
+        msg.setWindowTitle("Подтверждение")
+        msg.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
+        result = msg.exec_()
+        if result == QMessageBox.Yes:
+            with open(self.file_name, 'w', encoding='utf-8', newline='') as csv_file:
+                csv_writer = csv.writer(csv_file)
+                for row in range(self.table.rowCount()):
+                    row_data = []
+                    for column in range(self.table.columnCount()):
+                        item = self.table.item(row, column)
+                        if item is not None:
+                            row_data.append(item.text())
+                        else:
+                            row_data.append('')
+                    csv_writer.writerow(row_data)
+
+
+
+def main_window_def():
     app = QApplication(sys.argv)
     window = Shedule()
     window.show()
     sys.exit(app.exec_())
 
-main()

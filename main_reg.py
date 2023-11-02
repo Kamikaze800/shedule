@@ -1,5 +1,8 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtWidgets import QLabel, QPushButton
+
 from check_db import *
 from des import *
 
@@ -9,6 +12,8 @@ class Interface(QtWidgets.QWidget):
         super().__init__(parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
+
+        self.setWindowIcon(QIcon('profile.jpg'))
 
         self.ui.pushButton.clicked.connect(self.reg)
         self.ui.pushButton_2.clicked.connect(self.auth)
@@ -38,6 +43,7 @@ class Interface(QtWidgets.QWidget):
         name = self.ui.lineEdit.text()
         passw = self.ui.lineEdit_2.text()
         self.check_db.thr_login(name, passw)
+
         return
 
 
@@ -48,12 +54,10 @@ class Interface(QtWidgets.QWidget):
         self.check_db.thr_register(name, passw)
 
 
-def main():
+def main_reg_def():
     app = QtWidgets.QApplication(sys.argv)
     mywin = Interface()
     mywin.show()
+    main_window_def()
     sys.exit(app.exec_())
 
-
-if __name__ == "__main__":
-    main()
