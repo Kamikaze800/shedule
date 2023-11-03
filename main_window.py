@@ -17,7 +17,7 @@ class Shedule(QMainWindow):
         self.ui.setupUi(self)
         # self.ui = Ui_MainWindow()
         # self.ui.setupUi(self)
-        self.setWindowIcon(QIcon('table.png'))
+        self.setWindowIcon(QIcon('static/img/table.png'))
         self.ui.view_table_but.clicked.connect(self.view_table_def)
         self.ui.view_count_sub_table.clicked.connect(self.view_count_sub_table_def)
         self.ui.view_teach_sub_table.clicked.connect(self.view_teach_sub_table_def)
@@ -38,26 +38,26 @@ class Shedule(QMainWindow):
             trash_def()
 
     def view_count_sub_table_def(self):
-        self.qwidget_count_sub_table.show()
+        self.ui.qwidget_count_sub_table.show()
 
 
     def view_teach_sub_table_def(self):
-        self.qwidget_teach_sub_table.show()
+        self.ui.qwidget_teach_sub_table.show()
 
 
     def table_save_changes_def(self):
         pass
 
     def view_table_def(self):
-        self.tableWidget.clearContents()
-        with open(f'static/csv/{self.num_klas_table.text()} класс/{self.day_table.currentText()}.csv', 'r',
+        self.ui.tableWidget.clearContents()
+        with open(f'static/csv/{self.ui.num_klas_table.text()} класс/{self.ui.day_table.currentText()}.csv', 'r',
                   encoding='utf-8') as file:
             reader = csv.reader(file)
             data = list(reader)
-        with open('teach_klas.csv', 'r',
+        with open(f'static/csv/teach_klas.csv', 'r',
                   encoding='utf-8') as file:
             reader = csv.reader(file)
-            sub_teach = create_dc_from_csv('teach_klas.csv')[f'{self.num_klas_table.text()} класс']
+            sub_teach = create_dc_from_csv('static/csv/teach_klas.csv')[f'{self.ui.num_klas_table.text()} класс']
         # Заполняем таблицу данными из файла
         for i, row in enumerate(data[1:]):
             for j, value in enumerate(row):
@@ -67,7 +67,7 @@ class Shedule(QMainWindow):
                         subject = key
                         break
                 table_item = QTableWidgetItem(subject)
-                self.tableWidget.setItem(i, j, table_item)
+                self.ui.tableWidget.setItem(i, j, table_item)
 
 class shablon_table_view(QWidget):
     def __init__(self, file_name):
@@ -80,7 +80,7 @@ class shablon_table_view(QWidget):
         self.file_name = file_name
 
         # Открываем файл CSV и читаем данные
-        with open(f'{file_name}', 'r', encoding='utf-8') as file:
+        with open(f'static/csv/{file_name}', 'r', encoding='utf-8') as file:
             reader = csv.reader(file)
             data = list(reader)
 
@@ -123,7 +123,7 @@ class shablon_table_view(QWidget):
         msg.setStandardButtons(QMessageBox.Yes | QMessageBox.Cancel)
         result = msg.exec_()
         if result == QMessageBox.Yes:
-            with open(self.file_name, 'w', encoding='utf-8', newline='') as csv_file:
+            with open(f'static/csv/{self.file_name}', 'w', encoding='utf-8', newline='') as csv_file:
                 csv_writer = csv.writer(csv_file)
                 for row in range(self.table.rowCount()):
                     row_data = []
@@ -142,4 +142,3 @@ def main_window_def():
     window = Shedule()
     window.show()
     sys.exit(app.exec_())
-

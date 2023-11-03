@@ -2,11 +2,11 @@ import csv
 import math
 
 def trash_def():
-    with open('teach_klas.csv', 'r', encoding='utf-8') as file:
+    with open('static/csv/teach_klas.csv', 'r', encoding='utf-8') as file:
         reader = csv.reader(file)
         data_teach_klas = list(reader)
 
-    with open('subject_count.csv', 'r', encoding='utf-8') as file:
+    with open('static/csv/subject_count.csv', 'r', encoding='utf-8') as file:
         reader = csv.reader(file)
         data_subject_count = list(reader)
     # cоздание словаря типа класс: {учитель: часы}

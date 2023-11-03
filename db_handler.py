@@ -4,7 +4,7 @@ import sys
 from main_window import *
 
 def login(login, passw, signal):
-    con = sqlite3.connect('users') # Подключаемся к базе данных
+    con = sqlite3.connect('static/users') # Подключаемся к базе данных
     cur = con.cursor()
 
     # Проверяем есть ли такой пользователь

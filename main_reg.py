@@ -13,7 +13,7 @@ class Interface(QtWidgets.QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
 
-        self.setWindowIcon(QIcon('profile.jpg'))
+        self.setWindowIcon(QIcon('static/img/profile.jpg'))
 
         self.ui.pushButton.clicked.connect(self.reg)
         self.ui.pushButton_2.clicked.connect(self.auth)
@@ -61,3 +61,5 @@ def main_reg_def():
     mywin = Interface()
     mywin.show()
     sys.exit(app.exec_())
+
+main_reg_def()
