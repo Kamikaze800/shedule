@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(674, 340)
+        MainWindow.resize(674, 377)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
@@ -88,9 +88,12 @@ class Ui_MainWindow(object):
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(560, 170, 111, 20))
         self.label_2.setObjectName("label_2")
+        self.save_table_btn = QtWidgets.QPushButton(self.centralwidget)
+        self.save_table_btn.setGeometry(QtCore.QRect(240, 290, 93, 28))
+        self.save_table_btn.setObjectName("save_table_btn")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 674, 21))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 674, 26))
         self.menubar.setObjectName("menubar")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -142,3 +145,4 @@ class Ui_MainWindow(object):
         self.generation_but.setText(_translate("MainWindow", "генерация"))
         self.label.setText(_translate("MainWindow", "кол-во часов"))
         self.label_2.setText(_translate("MainWindow", "учителя и предметы"))
+        self.save_table_btn.setText(_translate("MainWindow", "сохранить"))

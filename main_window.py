@@ -25,7 +25,26 @@ class Shedule(QMainWindow):
         self.ui.qwidget_teach_sub_table = shablon_table_view('teach_klas.csv')
         self.ui.generation_but.clicked.connect(self.generation_def)
         self.setWindowTitle("Генерация расписаний")
+        self.ui.save_table_btn.clicked.connect(self.save_table_def)
 
+    def save_table_def(self):
+        with open(f'static/csv/{self.ui.num_klas_table.text()} класс/{self.ui.day_table.currentText()}.csv', 'w',
+                  encoding='utf-8', newline='') as csv_file:
+            # input()
+            dig = 0
+            csv_writer = csv.writer(csv_file)
+            sp = []
+            for row in range(self.ui.tableWidget.rowCount()):
+                row_data = []
+                for column in range(self.ui.tableWidget.columnCount()):
+                    item = self.ui.tableWidget.item(row, column)
+                    if item is not None:
+                        row_data.append(item.text())
+                sp.append(row_data)
+            russian_alphabet = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ'
+            csv_writer.writerow(russian_alphabet[0:len(max(sp, key=len))])
+            for row_data in sp:
+                csv_writer.writerow(row_data)
     def generation_def(self):
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Question)
@@ -142,3 +161,5 @@ def main_window_def():
     window = Shedule()
     window.show()
     sys.exit(app.exec_())
+
+main_window_def()
